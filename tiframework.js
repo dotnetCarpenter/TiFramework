@@ -81,7 +81,11 @@ TiFramework.prototype = function(context) {
 				
 			case 'row':
 				this.context = Ti.UI.createTableViewRow();
-				break;											
+				break;
+			
+			case 'currentWin':
+				this.context = Ti.UI.currentWindow;
+				break;
 		}
 	}
 
@@ -140,7 +144,11 @@ TiFramework.prototype = function(context) {
 	 * @param object
 	 */
 	this.append = function(element) {
-		this.context.add(element);
+		if( typeof(element.context) == 'undefined'){
+			this.context.add(element);
+		}else{
+			this.context.add(element.context);
+		}
 	
 		return this;
 	};
