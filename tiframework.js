@@ -171,7 +171,27 @@ TiFramework.prototype = function(context) {
 		this.context.open(opts);
 		
 		return this;
-	};	
+	};
+  
+	/**
+     * Close all children and null them but doesn't not handle attached eventlisteners
+	 */
+   	this.empty = function(){
+    	removeChildren(this.context);
+	    function removeChildren( parent ) {
+	    	parent.children = parent.context.children || parent.children;
+			if(parent.children) {
+				parent.children.forEach(function(child, index) {
+					if(child.context.children || child.children) {
+						removeChildren(child); // recursive kill the children
+					}
+					parent.remove = parent.remove || parent.context.remove, parent.remove(child);
+					child = null;
+				});
+	    	}
+		}
+		return this;
+	}
 
 /** --- UI ELEMENTS --- */
 	
